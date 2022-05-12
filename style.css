@@ -1,0 +1,39 @@
+/* Font set to 12px. Allows REMs to be used easily */
+html {
+    font-family: 'Roboto', sans-serif;
+    font-size: 62.5%;
+    box-sizing: border-box;
+    background: linear-gradient(#333, black);
+    height: 125vh;
+    /* border: 8px solid red; */
+}
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+.container {
+    text-align: center;
+}
+
+h1,h2,h3 {
+    font-size: 2rem;
+    color: #999;
+}
+
+img {
+    max-width: 70rem;
+    max-height: 50rem;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+}
+footer .fa-github:hover {
+    color: black;
+}
+footer .fa-twitter:hover {
+    color: dodgerblue;
+}
