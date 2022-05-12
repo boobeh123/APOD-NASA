@@ -4,7 +4,7 @@
 This web application fetches from the NASA Picture-of-the-Day API. First select any date to return a name, image or video, and description.
 
 ## Demo
-!(NASAAPOD.gif)
+![demogif](NASAAPODdemo.gif)
 
 ## Features
 * Accepts a date (Month/Day/Year)
