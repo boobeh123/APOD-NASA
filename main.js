@@ -17,7 +17,7 @@ function getFetch(){
         // Displays name by default
         document.querySelector('h2').innerText = data.title;
         // Displays description by default
-        document.querySelector('h3').innerText = data.explanation;
+        document.querySelector('p').innerText = data.explanation;
       })
       .catch(err => {
           console.log(`error ${err}`)
