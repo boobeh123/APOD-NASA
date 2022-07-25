@@ -1,8 +1,11 @@
+// API key located in config.js
+const daKey = hiddenConfig.hiddenKey;
+
 document.querySelector('button').addEventListener('click', getFetch)
 
 function getFetch(){
   const date = document.querySelector('input').value;
-  const url = 'https://api.nasa.gov/planetary/apod?api_key=TcR73ID38bVL1gJeI15IP33d9Pe6Y1NoIGBl0lEe&date='+date;
+  const url = `https://api.nasa.gov/planetary/apod?api_key=${daKey}&date=`+date;
 
   fetch(url)
       .then(res => res.json()) // parse response as JSON
