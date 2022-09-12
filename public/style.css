@@ -1,0 +1,163 @@
+/**************************************************************
+* Clearfix
+***************************************************************/
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+.clearfix {
+    clear: both;
+    *zoom: 1;
+}
+/**************************************************************
+* Base styles
+***************************************************************/
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', 'Times New Roman', sans-serif;
+    font-size: 1rem;
+    line-height: 1.4rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0, .5);
+    background: black;
+    /* border: 2px solid red; */
+} 
+
+.float-right {
+    float: right;
+    /* margin-right: 1rem; */
+    padding: 1rem;
+}
+.hidden {
+    display: none;
+}
+/**************************************************************
+* Links
+***************************************************************/
+a {
+    text-decoration: none;
+    color: #fefefe;
+}
+
+.fa-github {
+    color: #fefefe;
+}
+.fa-github:hover {
+    color: black;
+}
+.fa-twitter:hover {
+    color: dodgerblue;
+}
+
+.fa-github:active, .fa-twitter:active {
+    transform: translateY(-4.5px);
+}
+/**************************************************************
+* Header
+***************************************************************/
+.logo {
+    font-family: 'Lato';
+    border-left: 4px solid #648880;
+    font-weight: 100;
+    padding: 0.25rem 0 0.25rem 1rem;
+    color: #a9b2b9;
+    font-size: 1rem;
+    margin-bottom: .5rem;
+    /* border: 2px solid red; */
+}
+.logo:hover {
+    color: #648880;
+}
+
+/**************************************************************
+* Section
+***************************************************************/
+.background-image {
+    /* border: 2px solid red; */
+    height: 100vh;
+    max-width: 100vw;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+input, button {
+    background-color: #333;
+    border: #333;
+    color: #999;
+    text-shadow: 1px 1px 2px rgba(0,0,0, .5);
+    font-family: Roboto, sans-serif;
+    width: 360px;
+    height: 75px;
+    display: block;
+    margin: 3px;
+    text-align: center;
+    font-size: 2rem;
+    border-radius: 5px;
+}
+
+button {
+    display: inline-block;
+    width: 175px;
+    cursor: pointer;
+    transition: all .1s linear;
+    box-shadow: 0 5px 0 #648880;
+    font-size: 1rem;
+
+}
+button:active {
+    box-shadow: 0 2px 0 lime;
+    transform: translateY(3px);
+}
+.randomBtn:active {
+    box-shadow: 0 2px 0 plum;
+}
+  
+button:hover {
+    background-color: #444;
+}
+
+section span, section p {
+    color: #999;
+}
+/**************************************************************
+* Footer
+***************************************************************/
+footer {
+    height: 77vh;
+    color: #999;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 1rem 0 1rem;
+}
+
+/**************************************************************
+* Media queries
+***************************************************************/
+
+@media screen and (max-device-width: 1440px) {
+
+  }
+
+@media screen and (max-device-width: 1024px) {
+  
+  }
+  
+  @media screen and (max-device-width: 768px) {
+
+  }
+  
+  @media screen and (max-device-width: 565px) {
+
+  }
