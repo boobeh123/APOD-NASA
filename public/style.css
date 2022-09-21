@@ -204,7 +204,7 @@ section span, section p {
     }
     .inputContainer {
         /* border: 2px solid red; */
-        height: 75vh;
+        height: 70vh;
         display: flex;
         align-items: flex-end;
         justify-content: space-evenly;
