@@ -3,7 +3,7 @@ document.querySelector('.randomBtn').addEventListener('click', getRandomImage);
 
 async function getDatedImage() {
     const date = document.querySelector('.dateInput').value;
-    const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_KEY}&date=${date}`;
+    const url = `https://api.nasa.gov/planetary/apod?api_key=${env.API_KEY}&date=${date}`;
     let response = await fetch(url);
     let data = await response.json();
 
@@ -25,7 +25,7 @@ async function getDatedImage() {
 
 async function getRandomImage() {
     const date = formatDate(randomDate());
-    const url = `https://api.nasa.gov/planetary/apod?api_key=TcR73ID38bVL1gJeI15IP33d9Pe6Y1NoIGBl0lEe&date=${date}`;
+    const url = `https://api.nasa.gov/planetary/apod?api_key=${secrets.API_KEY}&date=${date}`;
     let response = await fetch(url);
     let data = await response.json();
 
