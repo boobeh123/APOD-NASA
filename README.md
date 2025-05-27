@@ -3,6 +3,7 @@ This web application is a static webpage that interacts with NASA's API, receive
 
 ## Demo
 ![demogif](NASAAPODdemo.gif)
+![demogif](NASAAPODdemo2.gif)
 
 ## Features
 * Static webpage deployed with GitHub
