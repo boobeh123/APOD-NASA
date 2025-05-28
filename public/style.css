@@ -276,6 +276,9 @@ section span, section p {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 5px;
     transition: all var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
 }
 
 .explanation-header {
@@ -324,6 +327,39 @@ section span, section p {
     text-align: justify;
 }
 
+.download-btn {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    border: none;
+    padding: var(--spacing-sm);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    font-size: 1rem;
+    transition: all var(--transition-speed) ease;
+    margin-top: var(--spacing-sm);
+}
+
+.download-btn:hover {
+    background-color: #7a9a8f;
+    transform: translateY(-2px);
+}
+
+.download-btn:active {
+    transform: translateY(1px);
+}
+
+.download-btn i {
+    font-size: 1.2rem;
+}
+
+.download-btn.hidden {
+    display: none;
+}
+
 /**************************************************************
 * Footer
 ***************************************************************/
@@ -333,6 +369,7 @@ section span, section p {
     padding: var(--spacing-sm);
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 5px;
+    position: relative;
 }
 
 .reel-container h3 {
@@ -348,6 +385,10 @@ section span, section p {
     padding: var(--spacing-xs);
     scrollbar-width: thin;
     scrollbar-color: var(--color-primary) transparent;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-padding: var(--spacing-sm);
 }
 
 .reel::-webkit-scrollbar {
@@ -371,6 +412,13 @@ section span, section p {
     cursor: pointer;
     transition: transform var(--transition-speed) ease;
     position: relative;
+    scroll-snap-align: start;
+    outline: none;
+}
+
+.reel-item:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 .reel-item:hover {
@@ -381,6 +429,32 @@ section span, section p {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 4px;
+    transition: opacity var(--transition-speed) ease;
+    background-color: var(--color-bg);
+}
+
+.reel-item img[loading="lazy"] {
+    opacity: 0;
+}
+
+.reel-item img.loaded {
+    opacity: 1;
+}
+
+.reel-item img.error {
+    opacity: 0.5;
+    background-color: var(--color-bg-dark);
+    position: relative;
+}
+
+.reel-item img.error::after {
+    content: "⚠️";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
 }
 
 .reel-item .date {
