@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', updateReel);
 document.querySelector('.randomBtn').addEventListener('click', getRandomImage);
 document.querySelector('.toggle-explanation').addEventListener('click', toggleExplanation);
+document.querySelector('.download-btn').addEventListener('click', downloadImage);
 
 function toggleExplanation() {
     const container = document.querySelector('.explanation-container');
@@ -20,22 +21,52 @@ function updateReel() {
         if (image.media_type === 'image') {
             const reelItem = document.createElement('div');
             reelItem.className = 'reel-item';
+            reelItem.tabIndex = 0; // Make the item focusable
+            reelItem.setAttribute('role', 'button');
+            reelItem.setAttribute('aria-label', `APOD from ${image.date}`);
             reelItem.innerHTML = `
-                <img src="${image.hdurl}" alt="APOD from ${image.date}">
+                <img 
+                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" 
+                    data-src="${image.hdurl}" 
+                    alt="APOD from ${image.date}"
+                    loading="lazy"
+                >
                 <div class="date">${image.date}</div>
                 <button class="remove-btn" aria-label="Remove image">
                     <i class="fas fa-times"></i>
                 </button>
             `;
             
+            const img = reelItem.querySelector('img');
+            
+            // Add load event listener
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+            });
+            
+            // Add error event listener
+            img.addEventListener('error', () => {
+                img.classList.add('error');
+                console.error(`Failed to load image: ${image.hdurl}`);
+            });
+            
             // Add click event to load the image
-            reelItem.querySelector('img').addEventListener('click', () => {
+            const loadImage = () => {
                 document.querySelector('.background-image').style.backgroundImage = `url('${image.hdurl}')`;
                 document.querySelector('.copyright').innerText = image.copyright;
                 document.querySelector('.date').innerText = image.date;
                 document.querySelector('.explanation').innerText = image.explanation;
                 document.querySelector('.explanation-container').classList.remove('hidden');
                 document.querySelector('.explanation-container').classList.remove('expanded');
+            };
+
+            // Add click and keyboard event listeners
+            reelItem.addEventListener('click', loadImage);
+            reelItem.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    loadImage();
+                }
             });
 
             // Add click event to remove the image
@@ -45,6 +76,40 @@ function updateReel() {
             });
             
             reel.appendChild(reelItem);
+
+            // Load the actual image
+            img.src = img.dataset.src;
+        }
+    });
+
+    // Add keyboard navigation for the reel
+    reel.addEventListener('keydown', (e) => {
+        const items = Array.from(reel.querySelectorAll('.reel-item'));
+        const currentIndex = items.findIndex(item => item === document.activeElement);
+        
+        if (currentIndex === -1) return;
+
+        switch (e.key) {
+            case 'ArrowLeft':
+                e.preventDefault();
+                if (currentIndex > 0) {
+                    items[currentIndex - 1].focus();
+                }
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                if (currentIndex < items.length - 1) {
+                    items[currentIndex + 1].focus();
+                }
+                break;
+            case 'Home':
+                e.preventDefault();
+                items[0].focus();
+                break;
+            case 'End':
+                e.preventDefault();
+                items[items.length - 1].focus();
+                break;
         }
     });
 }
@@ -106,6 +171,27 @@ function hideLoading() {
     document.querySelector('.loading').classList.remove('visible');
 }
 
+function downloadImage() {
+    const backgroundImage = document.querySelector('.background-image').style.backgroundImage;
+    if (!backgroundImage) return;
+
+    // Extract the URL from the background-image style
+    const imageUrl = backgroundImage.slice(4, -1).replace(/["']/g, "");
+    
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    
+    // Get the date from the explanation container
+    const date = document.querySelector('.date').innerText;
+    link.download = `nasa-apod-${date}.jpg`;
+    
+    // Append to body, click, and remove
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 async function getRandomImage() {
     showLoading();
     try {
@@ -123,6 +209,8 @@ async function getRandomImage() {
             throw new Error(data.error.message || 'Failed to fetch image');
         }
 
+        const downloadBtn = document.querySelector('.download-btn');
+        
         if (data.media_type === 'image') {  
             document.querySelector('iframe').classList.add('hidden');
             document.querySelector('.explanation-container').classList.remove('hidden');
@@ -131,6 +219,7 @@ async function getRandomImage() {
             document.querySelector('.date').innerText = data.date;
             document.querySelector('.explanation').innerText = data.explanation;
             document.querySelector('.explanation-container').classList.remove('expanded');
+            downloadBtn.classList.remove('hidden');
             saveToLocalStorage(data);
         } else if (data.media_type === 'video') {
             document.querySelector('iframe').classList.add('hidden');
@@ -141,6 +230,7 @@ async function getRandomImage() {
             document.querySelector('.date').innerText = data.date;
             document.querySelector('.explanation').innerText = data.explanation;
             document.querySelector('.explanation-container').classList.remove('expanded');
+            downloadBtn.classList.add('hidden');
             saveToLocalStorage(data);
         }
     } catch (error) {
