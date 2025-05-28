@@ -6,7 +6,31 @@ document.querySelector('.download-btn').addEventListener('click', downloadImage)
 
 function toggleExplanation() {
     const container = document.querySelector('.explanation-container');
-    container.classList.toggle('expanded');
+    const button = document.querySelector('.toggle-explanation');
+    const isExpanded = container.classList.toggle('expanded');
+    
+    // Update ARIA states
+    button.setAttribute('aria-expanded', isExpanded);
+    
+    // Announce state change to screen readers
+    const announcement = isExpanded ? 'Explanation expanded' : 'Explanation collapsed';
+    announceToScreenReader(announcement);
+}
+
+function announceToScreenReader(message) {
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.classList.add('sr-only');
+    announcement.textContent = message;
+    
+    document.body.appendChild(announcement);
+    
+    // Remove the announcement after it's been read
+    setTimeout(() => {
+        document.body.removeChild(announcement);
+    }, 1000);
 }
 
 function updateReel() {
@@ -21,19 +45,23 @@ function updateReel() {
         if (image.media_type === 'image') {
             const reelItem = document.createElement('div');
             reelItem.className = 'reel-item';
-            reelItem.tabIndex = 0; // Make the item focusable
-            reelItem.setAttribute('role', 'button');
+            reelItem.tabIndex = 0;
+            reelItem.setAttribute('role', 'listitem');
             reelItem.setAttribute('aria-label', `APOD from ${image.date}`);
+            
+            // Create descriptive alt text
+            const altText = `NASA Astronomy Picture of the Day from ${image.date}. ${image.copyright ? `Credit: ${image.copyright}.` : ''} ${image.explanation ? image.explanation.substring(0, 150) + '...' : ''}`;
+            
             reelItem.innerHTML = `
                 <img 
                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" 
                     data-src="${image.hdurl}" 
-                    alt="APOD from ${image.date}"
+                    alt="${altText}"
                     loading="lazy"
                 >
                 <div class="date">${image.date}</div>
-                <button class="remove-btn" aria-label="Remove image">
-                    <i class="fas fa-times"></i>
+                <button class="remove-btn" aria-label="Remove image from recently viewed">
+                    <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
             `;
             
@@ -42,22 +70,29 @@ function updateReel() {
             // Add load event listener
             img.addEventListener('load', () => {
                 img.classList.add('loaded');
+                announceToScreenReader(`Image from ${image.date} loaded`);
             });
             
             // Add error event listener
             img.addEventListener('error', () => {
                 img.classList.add('error');
                 console.error(`Failed to load image: ${image.hdurl}`);
+                announceToScreenReader(`Failed to load image from ${image.date}`);
             });
             
             // Add click event to load the image
             const loadImage = () => {
                 document.querySelector('.background-image').style.backgroundImage = `url('${image.hdurl}')`;
+                document.querySelector('.background-image').setAttribute('aria-label', altText);
                 document.querySelector('.copyright').innerText = image.copyright;
                 document.querySelector('.date').innerText = image.date;
                 document.querySelector('.explanation').innerText = image.explanation;
                 document.querySelector('.explanation-container').classList.remove('hidden');
                 document.querySelector('.explanation-container').classList.remove('expanded');
+                document.querySelector('.toggle-explanation').setAttribute('aria-expanded', 'false');
+                
+                // Announce to screen readers
+                announceToScreenReader(`Loaded image from ${image.date}`);
             };
 
             // Add click and keyboard event listeners
@@ -71,8 +106,9 @@ function updateReel() {
 
             // Add click event to remove the image
             reelItem.querySelector('.remove-btn').addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent triggering the image click event
+                e.stopPropagation();
                 removeImage(index);
+                announceToScreenReader(`Removed image from ${image.date} from recently viewed`);
             });
             
             reel.appendChild(reelItem);
@@ -157,6 +193,9 @@ function showError(message) {
     errorElement.textContent = message;
     errorElement.classList.add('visible');
     
+    // Announce error to screen readers
+    announceToScreenReader(`Error: ${message}`);
+    
     // Hide error after 1.5 seconds
     setTimeout(() => {
         errorElement.classList.remove('visible');
@@ -164,11 +203,14 @@ function showError(message) {
 }
 
 function showLoading() {
-    document.querySelector('.loading').classList.add('visible');
+    const loadingElement = document.querySelector('.loading');
+    loadingElement.classList.add('visible');
+    announceToScreenReader('Loading new image');
 }
 
 function hideLoading() {
-    document.querySelector('.loading').classList.remove('visible');
+    const loadingElement = document.querySelector('.loading');
+    loadingElement.classList.remove('visible');
 }
 
 function downloadImage() {
@@ -190,6 +232,9 @@ function downloadImage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    
+    // Announce download to screen readers
+    announceToScreenReader(`Downloading image from ${date}`);
 }
 
 async function getRandomImage() {
@@ -212,9 +257,13 @@ async function getRandomImage() {
         const downloadBtn = document.querySelector('.download-btn');
         
         if (data.media_type === 'image') {  
+            // Create descriptive alt text
+            const altText = `NASA Astronomy Picture of the Day from ${data.date}. ${data.copyright ? `Credit: ${data.copyright}.` : ''} ${data.explanation ? data.explanation.substring(0, 150) + '...' : ''}`;
+            
             document.querySelector('iframe').classList.add('hidden');
             document.querySelector('.explanation-container').classList.remove('hidden');
             document.querySelector('.background-image').style.backgroundImage = `url('${data.hdurl}')`;
+            document.querySelector('.background-image').setAttribute('aria-label', altText);
             document.querySelector('.copyright').innerText = data.copyright || 'NASA';
             document.querySelector('.date').innerText = data.date;
             document.querySelector('.explanation').innerText = data.explanation;
@@ -225,6 +274,7 @@ async function getRandomImage() {
             document.querySelector('iframe').classList.add('hidden');
             document.querySelector('.explanation-container').classList.remove('hidden');
             document.querySelector('iframe').src = data.url;
+            document.querySelector('iframe').setAttribute('title', `NASA video from ${data.date}`);
             document.querySelector('.background').style.backgroundImage = `url('')`;
             document.querySelector('.copyright').innerText = data.copyright || 'NASA';
             document.querySelector('.date').innerText = data.date;
