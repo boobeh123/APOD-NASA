@@ -17,21 +17,15 @@ This web application is a static webpage that interacts with NASA's API, receive
 
 ## Optimitzation
 * Add fallback images if the NASA API is unavailable
-* Add keyboard navigation for accessibility
-* Add smooth transitions when switching between images
-* Add a "Fullscreen" view option
 * Improve the mobile responsiveness of the reel
-* Implement image lazy loading for the reel
 * Optimize image loading and caching
 * Add error boundaries for failed image loads
 * Add a search/filter function for the reel
-* Implement a "Favorites" system separate from recently viewed
-* Add the ability to download images
 * Show image metadata (resolution, file size, etc.)
 
 ## What did you learn?
 * HTML: iframe tag, semantics-added a header/main/footer vs one div.
-* JavaScript: Token authentication, using an object to store fetched data as variables, using localStorage as a database, error handling & displaying an error message when bugs arise.
+* JavaScript: Token authentication, using an object to store fetched data as properties, using localStorage as a database, error handling & displaying an error message when bugs arise.
 
 ## Source:
 https://api.nasa.gov/
