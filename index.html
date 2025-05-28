@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Photo of that Day</title>
+    <meta name="description" content="Bobby Asakawa version of a NASA's Astronomy Picture of the Day" />
+    <meta name="keywords" content="Bobby, asakawa, hawaii, HI, oahu, ewa, ewa beach, API project, static webpage, software, engineer, full, stack, web, developer" />
+    <meta name="author" content="Bobby Asakawa" />
+    <title>NASA's Astronomy Picture of the Day</title>
     <!-- Font awesome icons -->
     <script src="https://kit.fontawesome.com/9f91d488b5.js" crossorigin="anonymous"></script>
     <!-- Google fonts -->
@@ -15,48 +24,48 @@
     <link rel="stylesheet" href="./public/style.css">
 </head>
 <body>
-    <div class="background-image">
+    <div class="background-image" role="img" aria-label="NASA Astronomy Picture of the Day">
         <div class="container">
             <header>
                 <div class="logo">
-                    <a href="index.html">
+                    <a href="index.html" aria-label="Return to home page">
                         <h1>NASA's</h1>
                         <h2>Photo of that Day</h2>
                     </a>
                 </div>
-                <button type="button" class="randomBtn">Random Date</button>
+                <button type="button" class="randomBtn" aria-label="Get random NASA image">Random Date</button>
             </header>
             <main>
-                <div class="error-message"></div>
+                <div class="error-message" role="alert" aria-live="polite"></div>
                 <article class="apod-content">
-                    <section class="explanation-container hidden">
+                    <section class="explanation-container hidden" aria-labelledby="explanation-title">
                         <div class="explanation-header">
-                            <span class="date-container">Date: <span class="date"> </span></span>
-                            <span class="copyright-container">&copy; <span class="copyright"> </span></span>
-                            <button class="toggle-explanation" aria-label="Toggle explanation">
-                                <i class="fas fa-chevron-down"></i>
+                            <span class="date-container">Date: <span class="date" aria-label="Image date"></span></span>
+                            <span class="copyright-container">&copy; <span class="copyright" aria-label="Image copyright"></span></span>
+                            <button class="toggle-explanation" aria-label="Toggle explanation" aria-expanded="false" aria-controls="explanation-content">
+                                <i class="fas fa-chevron-down" aria-hidden="true"></i>
                             </button>
                         </div>
-                        <div class="explanation-content">
+                        <div class="explanation-content" id="explanation-content" role="region" aria-label="Image explanation">
                             <p class="explanation"></p>
-                            <iframe width="640" height="480" src="" class="hidden video"></iframe>    
-                            <button class="download-btn" aria-label="Download image">
-                                <i class="fas fa-download"></i> Download Image
+                            <iframe width="640" height="480" src="" class="hidden video" title="NASA video content" aria-label="NASA video content"></iframe>    
+                            <button class="download-btn" aria-label="Download current image">
+                                <i class="fas fa-download" aria-hidden="true"></i> Download Image
                             </button>
                         </div>
                     </section>
                 </article>
             </main>
             <footer>
-                <div class="reel-container">
-                    <h3>Recently viewed</h3>
-                    <div class="reel"></div>
+                <div class="reel-container" role="region" aria-label="Recently viewed images">
+                    <h3 id="reel-title">Recently viewed</h3>
+                    <div class="reel" role="list" aria-labelledby="reel-title"></div>
                 </div>
             </footer>
         </div>
     </div>
-    <div class="loading">
-        <i class="fas fa-spinner"></i> Loading...
+    <div class="loading" role="status" aria-live="polite">
+        <i class="fas fa-spinner" aria-hidden="true"></i> Loading...
     </div>
     <script type='text/javascript' src="./public/main.js"></script>
 </body>
